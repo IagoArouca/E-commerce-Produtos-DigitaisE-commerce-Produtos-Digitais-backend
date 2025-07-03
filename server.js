@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db'); // Importa a função de conexão com o DB
 const productRoutes = require('./routes/productRoutes'); // Importa as rotas de produto
+const authRoutes = require('./routes/authRoutes'); 
 
 require('dotenv').config(); // Carrega as variáveis de ambiente
 
@@ -23,6 +24,7 @@ app.get('/', (req, res) => {
 
 // Usar as Rotas de Produto
 app.use('/api/products', productRoutes); // Todas as rotas definidas em productRoutes agora estarão prefixadas com /api/products
+app.use('/api/auth', authRoutes);
 
 // Inicia o Servidor
 app.listen(PORT, () => {
