@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
   // Pode adicionar outros campos como isAdmin, address, phone, etc.
 }, { timestamps: true });
 

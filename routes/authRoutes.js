@@ -5,8 +5,8 @@ const User = require('../models/User'); // Importe o modelo de Usuário
 const jwt = require('jsonwebtoken');     // Importe o jsonwebtoken
 
 // Função auxiliar para gerar JWT
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+const generateToken = (id, isAdmin) => {
+  return jwt.sign({ id, isAdmin }, process.env.JWT_SECRET, {
     expiresIn: '1h', // O token expira em 1 hora
   });
 };
@@ -41,7 +41,8 @@ router.post('/register', async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      token: generateToken(user._id), // Gera e envia o token
+      isAdmin: user.isAdmin,
+      token: generateToken(user._id, user.isAdmin), // Gera e envia o token
     });
   } catch (error) {
     console.error('Erro ao registrar usuário:', error);
@@ -78,7 +79,8 @@ router.post('/login', async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      token: generateToken(user._id),
+      isAdmin: user.isAdmin,
+      token: generateToken(user._id, user.isAdmin),
     });
   } catch (error) {
     console.error('Erro ao fazer login:', error);
