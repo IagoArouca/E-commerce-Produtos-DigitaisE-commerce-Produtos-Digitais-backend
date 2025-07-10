@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const connectDB = require('./config/db'); 
 const productRoutes = require('./routes/productRoutes');
 const authRoutes = require('./routes/authRoutes'); 
@@ -19,7 +20,6 @@ app.use(cors({
 
 connectDB();
 
-app.use(cors()); 
 app.use(express.json()); 
 
 app.use('/images', express.static(path.join(__dirname, 'public', 'images')));
