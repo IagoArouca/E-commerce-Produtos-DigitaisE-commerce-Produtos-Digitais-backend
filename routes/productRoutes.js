@@ -1,12 +1,7 @@
-// backend/routes/productRoutes.js
 const express = require('express');
-const router = express.Router(); // Cria um novo router Express
-const Product = require('../models/Product'); // Importa o modelo de Produto
+const router = express.Router(); 
+const Product = require('../models/Product'); 
 const { protect, admin } = require('../middleware/authMiddleware');
-
-// @route   GET /api/products
-// @desc    Obter todos os produtos
-// @access  Public
 router.get('/', async (req, res) => {
   try {
     const products = await Product.find();
@@ -17,14 +12,9 @@ router.get('/', async (req, res) => {
   }
 });
 
-// @route   POST /api/products
-// @desc    Adicionar um novo produto
-// @access  Public (por enquanto, depois pode ser restrito a admin)
 router.post('/', protect, admin,  async (req, res) => {
   try {
     const { name, price, imageUrl, description } = req.body;
-
-    // Validação básica
     if (!name || !price || !imageUrl) {
       return res.status(400).json({ message: 'Por favor, forneça nome, preço e URL da imagem.' });
     }
@@ -43,11 +33,6 @@ router.post('/', protect, admin,  async (req, res) => {
     res.status(400).json({ message: 'Erro ao adicionar produto', error: error.message });
   }
 });
-
-// NOVO: Adicionar rotas para obter um produto por ID, atualizar e deletar
-// @route   GET /api/products/:id
-// @desc    Obter um produto específico por ID
-// @access  Public
 router.get('/:id', async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -62,11 +47,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-
-// @route   PUT /api/products/:id
-// @desc    Atualizar um produto existente
-// @access  Private/Admin
-router.put('/:id', protect, admin, async (req, res) => { // Protegida por 'protect' e 'admin'
+router.put('/:id', protect, admin, async (req, res) => { 
   try {
     const { name, price, imageUrl, description } = req.body;
     const product = await Product.findById(req.params.id);
@@ -88,15 +69,12 @@ router.put('/:id', protect, admin, async (req, res) => { // Protegida por 'prote
   }
 });
 
-// @route   DELETE /api/products/:id
-// @desc    Remover um produto
-// @access  Private/Admin
-router.delete('/:id', protect, admin, async (req, res) => { // Protegida por 'protect' e 'admin'
+router.delete('/:id', protect, admin, async (req, res) => { 
   try {
     const product = await Product.findById(req.params.id);
 
     if (product) {
-      await product.deleteOne(); // Use deleteOne() ou remove() dependendo da versão do Mongoose
+      await product.deleteOne();
       res.json({ message: 'Produto removido com sucesso.' });
     } else {
       res.status(404).json({ message: 'Produto não encontrado.' });
