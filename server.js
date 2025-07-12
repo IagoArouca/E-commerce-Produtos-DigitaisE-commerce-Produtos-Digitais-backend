@@ -7,6 +7,14 @@ const path = require('path');
 
 require('dotenv').config(); 
 
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -21,8 +29,6 @@ app.use(cors({
 connectDB();
 
 app.use(express.json()); 
-
-app.use('/images', express.static(path.join(__dirname, 'public', 'images')));
 
 app.get('/', (req, res) => {
   res.send('Bem-vindo à API do nosso E-commerce Digital!');
